@@ -12,3 +12,4 @@ OPTIONS = webdriver.ChromeOptions()
 
 # Comment this out while debugging to see what is going on in Chrome
 #OPTIONS.add_argument("--headless")
+

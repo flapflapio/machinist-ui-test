@@ -9,8 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 import logging
 import time
 
-LOGGER = logging.getLogger(__name__)
 MAIN_PAGE = "https://machinist.flapflap.io/"
+
 
 
 def test_python_dot_org(driver: WebDriver):
@@ -37,6 +37,7 @@ def test_python_dot_org(driver: WebDriver):
 
     # Assert that the first search result is some text...
     assert first_result.text == 'PEP 394 -- The "python" Command on Unix-Like Systems'
+
 
 
 def test_expanding_menu_bar(driver: WebDriver):
