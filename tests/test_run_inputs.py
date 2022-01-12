@@ -1,18 +1,42 @@
+from typing import Optional
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import (
+    ElementNotVisibleException,
+    ElementNotSelectableException,
+    NoSuchElementException,
+)
 import time
+
+web = "https://machinist.flapflap.io/"
 
 
 def test_run_input_header(driver: WebDriver):
 
-    driver.get("https://machinist.flapflap.io/")
+    driver.get(web)
     driver.find_element_by_xpath('//*[@id="__next"]/main/div[2]/ul/li[2]').click()
-    time.sleep(5)
-    element_inspect = driver.find_element(By.XPATH, '//*[@id="rcDialogTitle0"]').text
+
+    wait = WebDriverWait(
+        driver,
+        10,
+        poll_frequency=1,
+        ignored_exceptions=[
+            ElementNotVisibleException,
+            ElementNotSelectableException,
+            NoSuchElementException,
+        ],
+    )
+
+    def element_is_visible_and_has_text(driver: WebDriver) -> Optional[str]:
+        ele = driver.find_element(By.XPATH, '//*[@id="rcDialogTitle0"]')
+        if ele.is_displayed and ele.text != "":
+            return ele.text
+        else:
+            return None
+
+    element_inspect = wait.until(element_is_visible_and_has_text)
 
     true_element = "Run Inputs"
     assert element_inspect == true_element
