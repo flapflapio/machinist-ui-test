@@ -8,15 +8,15 @@ from selenium.common.exceptions import (
     ElementNotSelectableException,
     NoSuchElementException,
 )
-import time
 
 web = "https://machinist.flapflap.io/"
+run_inputs_path = "#__next > main > div.MenuBar__Root-sc-1th5wld-0.jDqDxJ.App__FloatingMenuBar-gv0e21-2.eZsxUV > ul > li:nth-child(4)"
 
 
 def test_run_input_header(driver: WebDriver):
 
     driver.get(web)
-    driver.find_element_by_xpath('//*[@id="__next"]/main/div[2]/ul/li[2]').click()
+    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
 
     wait = WebDriverWait(
         driver,
@@ -43,25 +43,21 @@ def test_run_input_header(driver: WebDriver):
 
 
 def test_run_input_tape(driver: WebDriver):
-    driver.get("https://machinist.flapflap.io/")
-    driver.find_element_by_xpath('//*[@id="__next"]/main/div[2]/ul/li[2]').click()
-    WebDriverWait(driver, 5)
-    element_inspect = driver.find_element_by_class_name("ant-modal-body").text
+    driver.get(web)
+    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
+    element_inspect = driver.find_element(By.CLASS_NAME, "ant-modal-body").text
     true_element = "Tape:"
     assert element_inspect != true_element  # element inspect gives 'Tape: \nSubmit'
 
 
 def test_shadow_input_tape(driver: WebDriver):
-    driver.get("https://machinist.flapflap.io/")
-    driver.find_element_by_xpath('//*[@id="__next"]/main/div[2]/ul/li[2]').click()
-    time.sleep(5)
+    driver.get(web)
+    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
 
     ele = (
         WebDriverWait(driver, 20)
         .until(EC.element_to_be_clickable((By.CLASS_NAME, "ant-input")))
         .get_attribute("placeholder")
     )
-
-    # ele = driver.find_element(By.CLASS_NAME, "ant-modal-body").get_attribute("value")
     true_element = "Write your input tape here"
     assert ele == true_element
