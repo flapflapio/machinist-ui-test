@@ -1,15 +1,11 @@
 from typing import List, Tuple
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.remote import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-import logging
-import time
 
-LOGGER = logging.getLogger(__name__)
+
 MAIN_PAGE = "https://machinist.flapflap.io/"
 
 
