@@ -86,7 +86,6 @@ def test_add_run_input_valid(driver: WebDriver):
 
     # action.click_and_hold(source).move_to_element(target).release(target).perform()
     action.drag_and_drop(source, target).perform()
-    time.sleep(10)
     ele = driver.find_element(By.CLASS_NAME, "ant-input ant-input-sm")
     ele.send_keys(Keys.TAB)
     ele.clear()
