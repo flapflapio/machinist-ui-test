@@ -1,4 +1,6 @@
+import time
 from typing import Optional
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,6 +10,7 @@ from selenium.common.exceptions import (
     ElementNotSelectableException,
     NoSuchElementException,
 )
+from selenium.webdriver import ActionChains
 
 web = "https://machinist.flapflap.io/"
 run_inputs_path = "#__next > main > div.MenuBar__Root-sc-1th5wld-0.jDqDxJ.App__FloatingMenuBar-gv0e21-2.eZsxUV > ul > li:nth-child(4)"
@@ -61,3 +64,46 @@ def test_shadow_input_tape(driver: WebDriver):
     )
     true_element = "Write your input tape here"
     assert ele == true_element
+
+
+def test_add_run_input_valid(driver: WebDriver):
+    driver.get(web)
+    driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div').click()
+    driver.find_element(
+        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[1]/span[1]'
+    ).click()
+    driver.find_element(
+        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[2]'
+    ).click()
+
+    action = ActionChains(driver)
+    # ADD TRANSITION STATE
+    # Represents the ring around the state
+    source = driver.find_element(
+        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div/div[2]'
+    )
+    target = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div')
+
+    # action.click_and_hold(source).move_to_element(target).release(target).perform()
+    action.drag_and_drop(source, target).perform()
+    time.sleep(10)
+    ele = driver.find_element(By.CLASS_NAME, "ant-input ant-input-sm")
+    ele.send_keys(Keys.TAB)
+    ele.clear()
+    ele.send_keys("a")
+
+    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
+    ele2 = driver.find_element(
+        By.XPATH, "/html/body/div[3]/div/div[2]/div/div[2]/div[2]/div/input"
+    )
+    ele2.send_keys(Keys.TAB)
+    ele2.clear()
+    ele2.send_keys("a")
+    driver.find_element(
+        By.XPATH, "/html/body/div[3]/div/div[2]/div/div[2]/div[2]/div/button"
+    ).click()
+
+    true_element = '{"Accepted":true,"Path":["q0","q0"],"RemainingInput":""}'
+    output_element = driver.find_element(By.CLASS_NAME, "ant-modal-body").text
+
+    assert true_element == output_element
