@@ -1,4 +1,4 @@
-import time
+# from turtle import width
 from typing import Optional
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -79,6 +79,11 @@ def test_add_run_input_valid(driver: WebDriver):
     action = ActionChains(driver)
     # ADD TRANSITION STATE
     # Represents the ring around the state
+
+    element_ring = driver.find_element(
+        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div/span'
+    )
+    action.move_to_element_with_offset(element_ring, 0, 0).perform()
     source = driver.find_element(
         By.XPATH, '//*[@id="__next"]/main/div[1]/div/div/div[2]'
     )
