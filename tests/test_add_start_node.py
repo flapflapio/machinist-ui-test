@@ -9,22 +9,33 @@ web = "https://machinist.flapflap.io/"
 def test_add_node(driver: WebDriver):
 
     driver.get(web)
-    source = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]')
+    canvas_element = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]')
     action = ActionChains(driver)
-    action.double_click(source).perform()
+    action.move_to_element_with_offset(
+        canvas_element, 100, 100
+    ).double_click().perform()
 
     # check if node is added by verifying if there is text q1
     inspect_val = driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div[2]/p'
+        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div/p'
     ).text
-    true_val = "q1"
 
-    assert inspect_val == true_val
+    assert inspect_val == "q0"
 
 
 def test_start_node(driver: WebDriver):
     driver.get(web)
+
+    canvas_element = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]')
+    action = ActionChains(driver)
+    # Adding q0 theoretically even if bug is present
+    action.move_to_element_with_offset(
+        canvas_element, 100, 100
+    ).double_click().perform()
+
+    # Finds q0
     driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div').click()
+    # clicks on start state from the menu
     driver.find_element(
         By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[1]/span[1]'
     ).click()
