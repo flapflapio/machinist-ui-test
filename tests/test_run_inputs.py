@@ -1,4 +1,3 @@
-# from turtle import width
 from typing import Optional
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -111,12 +110,24 @@ def test_add_run_input_valid(driver: WebDriver):
     ).click()
 
     true_element = '{"Accepted":true,"Path":["q0","q0"],"RemainingInput":""}'
-    # output_element = (
-    #    WebDriverWait(driver, 20)
-    #    .until(EC.visibility_of_element_located((By.CLASS_NAME, "ant-modal-body")))
-    #    .get_attribute("p")
-    # )
-    output_element = driver.find_element(
-        By.XPATH, "//div[@class='ant-modal-body']//p"
-    ).text
-    assert true_element == output_element
+
+    wait = WebDriverWait(
+        driver,
+        10,
+        poll_frequency=1,
+        ignored_exceptions=[
+            ElementNotVisibleException,
+            ElementNotSelectableException,
+            NoSuchElementException,
+        ],
+    )
+
+    def element_is_visible_and_has_text(driver: WebDriver) -> Optional[str]:
+        ele = driver.find_element(By.CSS_SELECTOR, ".ant-modal-body p")
+        if ele.is_displayed and ele.text != "":
+            return ele.text
+        else:
+            return None
+
+    element_inspect = wait.until(element_is_visible_and_has_text)
+    assert true_element == element_inspect
