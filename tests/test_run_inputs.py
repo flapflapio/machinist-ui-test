@@ -80,8 +80,6 @@ def test_add_run_input_valid(driver: WebDriver):
     ).click()
 
     action = ActionChains(driver)
-    # ADD TRANSITION STATE
-    # Represents the ring around the state
 
     source = driver.find_element(
         By.XPATH, '//*[@id="__next"]/main/div[1]/div/div[1]/div[3]/div'
@@ -89,8 +87,6 @@ def test_add_run_input_valid(driver: WebDriver):
 
     target = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div')
     action.click_and_hold(source).drag_and_drop(source, target).perform()
-    # action.click_and_hold(source).move_to_element(target).release(target).perform()
-    # action.drag_and_drop(source, target).perform()
     ele = driver.find_element(
         By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[2]/div/input'
     )
