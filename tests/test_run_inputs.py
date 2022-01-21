@@ -68,10 +68,14 @@ def test_shadow_input_tape(driver: WebDriver):
 
 def test_add_run_input_valid(driver: WebDriver):
     driver.get(web)
+
+    # q0 state
     driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div').click()
+    # select start state
     driver.find_element(
         By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[1]/span[1]'
     ).click()
+    # select end state
     driver.find_element(
         By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[2]'
     ).click()
@@ -80,34 +84,39 @@ def test_add_run_input_valid(driver: WebDriver):
     # ADD TRANSITION STATE
     # Represents the ring around the state
 
-    element_ring = driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div/span'
-    )
-    action.move_to_element_with_offset(element_ring, 0, 0).perform()
     source = driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div/div[2]'
+        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div[1]/div[3]/div'
     )
-    target = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div')
 
+    target = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div')
+    action.click_and_hold(source).drag_and_drop(source, target).perform()
     # action.click_and_hold(source).move_to_element(target).release(target).perform()
-    action.drag_and_drop(source, target).perform()
-    ele = driver.find_element(By.CLASS_NAME, "ant-input ant-input-sm")
+    # action.drag_and_drop(source, target).perform()
+    ele = driver.find_element(
+        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[2]/div/input'
+    )
     ele.send_keys(Keys.TAB)
     ele.clear()
     ele.send_keys("a")
 
     driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
-    ele2 = driver.find_element(
-        By.XPATH, "/html/body/div[3]/div/div[2]/div/div[2]/div[2]/div/input"
+    run_input_placeholder = driver.find_element(
+        By.XPATH, "/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div/input"
     )
-    ele2.send_keys(Keys.TAB)
-    ele2.clear()
-    ele2.send_keys("a")
+    run_input_placeholder.send_keys(Keys.TAB)
+    run_input_placeholder.send_keys("a")
     driver.find_element(
-        By.XPATH, "/html/body/div[3]/div/div[2]/div/div[2]/div[2]/div/button"
+        By.CSS_SELECTOR,
+        "body > div:nth-child(17) > div > div.ant-modal-wrap > div > div.ant-modal-content > div.ant-modal-body > div > button",
     ).click()
 
     true_element = '{"Accepted":true,"Path":["q0","q0"],"RemainingInput":""}'
-    output_element = driver.find_element(By.CLASS_NAME, "ant-modal-body").text
-
+    # output_element = (
+    #    WebDriverWait(driver, 20)
+    #    .until(EC.visibility_of_element_located((By.CLASS_NAME, "ant-modal-body")))
+    #    .get_attribute("p")
+    # )
+    output_element = driver.find_element(
+        By.XPATH, "//div[@class='ant-modal-body']//p"
+    ).text
     assert true_element == output_element
