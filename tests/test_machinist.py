@@ -209,7 +209,9 @@ def test_undraggable_debugger(driver: WebElement):
     )
 
     actions = ActionChains(driver)
+
     actions.drag_and_drop_by_offset(element, -419, 318).perform()
+
 
     after_dragabble: str = driver.find_element(
         By.XPATH, r'.//*[contains(@class,"GraphStoreDebugger__DemoGraphViewerRoot")]'
