@@ -107,10 +107,5 @@ def test_denoting_endstate(driver: WebDriver):
         )
         == 1
         and clicked_node.text == selected_node.text
-        and len(
-            node_inside_nodemenu.find_elements(
-                By.XPATH, r'.//*[contains(@class,"State__SecondCircle")]'
-            )
-        )
-        == 1
+
     )
