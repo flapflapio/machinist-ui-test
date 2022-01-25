@@ -25,6 +25,7 @@ def test_deleting_node(driver: WebDriver):
     ).get_attribute("style")
 
     # make sure the nodeMenu is not visible at start
+
     assert node_bar_style == "opacity: 0;"
 
     driver.find_element(By.XPATH, r'.//*[contains(@class,"State__StateRoot")]').click()
@@ -85,7 +86,9 @@ def test_denoting_endstate(driver: WebDriver):
     ).get_attribute("style")
 
     # make sure the nodeMenu is visible once a node is selected
-    assert node_bar_style == ""
+
+    assert node_bar_style == ''
+
 
     driver.find_elements(
         By.CSS_SELECTOR, ".ant-checkbox-wrapper .ant-checkbox .ant-checkbox-input"
@@ -108,3 +111,4 @@ def test_denoting_endstate(driver: WebDriver):
         == 1
         and clicked_node.text == selected_node.text
     )
+
