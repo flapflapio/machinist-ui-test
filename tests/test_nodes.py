@@ -107,5 +107,4 @@ def test_denoting_endstate(driver: WebDriver):
         )
         == 1
         and clicked_node.text == selected_node.text
-
     )
