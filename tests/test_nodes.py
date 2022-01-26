@@ -42,7 +42,9 @@ def test_deleting_node(driver: WebDriver):
     ).click()
 
     # need to remove the comment once the bug on machinist page
-    # assert len(driver.find_elements(By.XPATH, r'.//*[contains(@class,"State__StateRoot")]')) == 1 and
+
+    # assert len(driver.find_elements(By.XPATH, r'.//*[contains(@class,"State__StateRoot")]')) == 1
+
 
 
 def test_denoting_endstate(driver: WebDriver):
@@ -110,5 +112,33 @@ def test_denoting_endstate(driver: WebDriver):
         )
         == 1
         and clicked_node.text == selected_node.text
+
     )
+
+
+
+def test_dragging_node(driver: WebDriver):
+
+    driver.maximize_window()
+    driver.get(MAIN_PAGE)
+
+    actions = ActionChains(driver)
+
+    canvas_element = driver.find_element(
+        By.XPATH, r'.//*[contains(@class,"NodeLayer__Root")]'
+    )
+    actions.move_to_element_with_offset(
+        canvas_element, 100, 100
+    ).double_click().perform()
+    node = driver.find_element(By.XPATH, r'.//*[contains(@class,"State__StateRoot")]')
+    initial_position = node.get_attribute("style")
+
+    actions.drag_and_drop_by_offset(node, 255, 255).perform()
+
+    postdrag_position = driver.find_element(
+        By.XPATH, r'.//*[contains(@class,"State__StateRoot")]'
+    ).get_attribute("style")
+
+    assert initial_position != postdrag_position
+
 
