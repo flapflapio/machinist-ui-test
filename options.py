@@ -9,6 +9,6 @@ tests in order to see what is happening in chrome during the test.
 from selenium import webdriver
 
 OPTIONS = webdriver.ChromeOptions()
-
+HOMEPAGE = "https://machinist.flapflap.io/"
 # Comment this out while debugging to see what is going on in Chrome
 OPTIONS.add_argument("--headless")
