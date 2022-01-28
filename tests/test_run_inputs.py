@@ -11,14 +11,17 @@ from selenium.common.exceptions import (
 )
 from selenium.webdriver import ActionChains
 
-web = "https://machinist.flapflap.io/"
-run_inputs_path = "#__next > main > div.MenuBar__Root-sc-1th5wld-0.jDqDxJ.App__FloatingMenuBar-gv0e21-2.eZsxUV > ul > li:nth-child(4)"
+from options import HOMEPAGE
 
+
+RUN_INPUTS_PATH = r'.//*[contains(@class,"anticon anticon-desktop ant-menu-item-icon")]'
+
+def
 
 def test_run_input_header(driver: WebDriver):
 
-    driver.get(web)
-    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
+    driver.get(HOMEPAGE)
+    driver.find_element(By.XPATH, RUN_INPUTS_PATH).click()
 
     wait = WebDriverWait(
         driver,
@@ -38,63 +41,68 @@ def test_run_input_header(driver: WebDriver):
         else:
             return None
 
-    element_inspect = wait.until(element_is_visible_and_has_text)
+    text_from_web = wait.until(element_is_visible_and_has_text)
 
-    true_element = "Run Inputs"
-    assert element_inspect == true_element
+    expected_text = "Run Inputs"
+    assert text_from_web == expected_text
 
 
 def test_run_input_tape(driver: WebDriver):
-    driver.get(web)
-    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
-    element_inspect = driver.find_element(By.CLASS_NAME, "ant-modal-body").text
-    true_element = "Tape:"
-    assert element_inspect != true_element  # element inspect gives 'Tape: \nSubmit'
+    driver.get(HOMEPAGE)
+    driver.find_element(By.XPATH, RUN_INPUTS_PATH).click()
+    text_from_web = driver.find_element(By.CLASS_NAME, "ant-modal-body").text
+    expected_text = "Tape:"
+    assert text_from_web != expected_text  # element inspect gives 'Tape: \nSubmit'
 
 
 def test_shadow_input_tape(driver: WebDriver):
-    driver.get(web)
-    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
+    driver.get(HOMEPAGE)
+    driver.find_element(By.XPATH, RUN_INPUTS_PATH).click()
 
-    ele = (
+    text_from_web = (
         WebDriverWait(driver, 20)
         .until(EC.element_to_be_clickable((By.CLASS_NAME, "ant-input")))
         .get_attribute("placeholder")
     )
-    true_element = "Write your input tape here"
-    assert ele == true_element
+    expected_text = "Write your input tape here"
+    assert expected_text == text_from_web
 
 
 def test_add_run_input_valid(driver: WebDriver):
-    driver.get(web)
+    driver.get(HOMEPAGE)
 
     # q0 state
-    driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div').click()
+    driver.find_element(By.XPATH, r'.//*[contains(@class,"State__StateRoot")]').click()
     # select start state
     driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[1]/span[1]'
+        By.XPATH, r'.//*[contains(@class,"ant-checkbox-input")]'
     ).click()
     # select end state
     driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[2]'
+        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[1]/label[2]/span[1]'
     ).click()
 
     action = ActionChains(driver)
 
-    source = driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/div[1]/div/div[1]/div[3]/div'
+    source_ring_ball = driver.find_element(
+        By.XPATH,
+        r'.//*[contains(@class,"TransitionCreatorRing__Ball")]',
     )
 
-    target = driver.find_element(By.XPATH, '//*[@id="__next"]/main/div[1]/div/div')
-    action.click_and_hold(source).drag_and_drop(source, target).perform()
+    target_state = driver.find_element(
+        By.XPATH, r'.//*[contains(@class,"State__StateRoot")]'
+    )
+    action.click_and_hold(source_ring_ball).drag_and_drop(
+        source_ring_ball, target_state
+    ).perform()
     ele = driver.find_element(
-        By.XPATH, '//*[@id="__next"]/main/section/div/div[3]/div[2]/div/input'
+        By.XPATH, r'.//*[contains(@class,"ant-input ant-input-sm")]'
     )
     ele.send_keys(Keys.TAB)
     ele.clear()
     ele.send_keys("a")
 
-    driver.find_element(By.CSS_SELECTOR, run_inputs_path).click()
+    driver.find_element(By.XPATH, RUN_INPUTS_PATH).click()
     run_input_placeholder = driver.find_element(
         By.XPATH, "/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div/input"
     )
