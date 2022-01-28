@@ -16,7 +16,6 @@ from options import HOMEPAGE
 
 RUN_INPUTS_PATH = r'.//*[contains(@class,"anticon anticon-desktop ant-menu-item-icon")]'
 
-def
 
 def test_run_input_header(driver: WebDriver):
 
