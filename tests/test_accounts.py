@@ -1,7 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-from config import EMAIL, PASSWORD, USERNAME, MAIN_PAGE_ACCOUNTS, driverWait
+from config import EMAIL, PASS, USERNAME, MAIN_PAGE_ACCOUNTS, driverWait
 from .test_signup import login
 
 
@@ -31,7 +31,7 @@ def test_account_modify(driver: WebElement):
     )
     password_box2.send_keys(Keys.TAB)
     password_box2.clear()
-    password_box2.send_keys(PASSWORD)
+    password_box2.send_keys(PASS)
 
     driver.find_element(
         By.XPATH,

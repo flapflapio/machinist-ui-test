@@ -11,7 +11,7 @@ MAIN_PAGE_FILE = "http://localhost:3000/filestorage"
 MAIN_PAGE = "http://localhost:3000/"
 MAIN_PAGE_ACCOUNTS = "http://localhost:3000/accounts"
 EMAIL = "flapmachinist@gmail.com"
-PASSWORD = "hello123"
+PASS = "hello123"
 USERNAME = "machinist"
 
 
