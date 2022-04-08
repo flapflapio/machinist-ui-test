@@ -1,7 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-from config import EMAIL, PASSWORD, MAIN_PAGE
+from config import EMAIL, PASS, MAIN_PAGE
 
 
 def testCreateAccount(driver: WebElement):
@@ -24,7 +24,7 @@ def testCreateAccount(driver: WebElement):
     )
     password_box.send_keys(Keys.TAB)
     password_box.clear()
-    password_box.send_keys(PASSWORD)
+    password_box.send_keys(PASS)
 
     password_confirmation = driver.find_element(
         By.XPATH,
